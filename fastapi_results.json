@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ff9f23ef-16f2-4b4c-bd81-08fc2caf9bb1",
+    "score": 81,
+    "customer": "EUROFIEL CONFECCI\u00d3N S.A. (CTF)",
+    "format": "EDIFACT",
+    "segments": [
+      {
+        "name": "BGM",
+        "matched": true
+      },
+      {
+        "name": "RFF",
+        "matched": true
+      },
+      {
+        "name": "IMD",
+        "matched": true
+      },
+      {
+        "name": "PIA",
+        "matched": true
+      },
+      {
+        "name": "UNT",
+        "matched": true
+      },
+      {
+        "name": "CUX",
+        "matched": true
+      },
+      {
+        "name": "LIN",
+        "matched": true
+      },
+      {
+        "name": "UNS",
+        "matched": true
+      },
+      {
+        "name": "DTM",
+        "matched": true
+      },
+      {
+        "name": "UNH",
+        "matched": true
+      },
+      {
+        "name": "QTY",
+        "matched": true
+      },
+      {
+        "name": "CNT",
+        "matched": true
+      },
+      {
+        "name": "UNZ",
+        "matched": true
+      },
+      {
+        "name": "UNB",
+        "matched": true
+      },
+      {
+        "name": "PRI",
+        "matched": true
+      },
+      {
+        "name": "NAD",
+        "matched": true
+      }
+    ],
+    "missing_qualifiers": [
+      "RFF:CR",
+      "RFF:ADE",
+      "RFF:ON",
+      "DTM:171"
+    ],
+    "xslt_code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!--  **************************************************************\n Create Date:\t26-SEPT-2022 \tCreated By:\tChitranjana\n Change Date:   20-NOV-2023     Changed By: Hamsha\n EDI Team\t:\tSolar EDI Team \n Customers\t:\tEUROFIEL CONFECCI\u00d3N,S.A.(SPF)(8429107009761\n) and EUROFIEL CONFECCI\u00d3N S.A. (CTF)(8429107000003)\n ************************************************************** -->\n<xsl:stylesheet\n\txmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\"\n\texclude-result-prefixes=\"#all\" version=\"2.0\">\n\t<xsl:output encoding=\"UTF-8\" method=\"xml\"/>\n\t\n\t<xsl:template match=\"/\">\n\t\t<xsl:variable name=\"c1\" select=\"/*\" />\n\t\t<xsl:variable name=\"h\" select=\"//S_UNB\" />\n\t\t<xsl:variable name=\"sid\" select=\"normalize-space($h/C_S002/D_0004)\" />\n\t\t<xsl:variable name=\"c\" select=\"//M_ORDERS\" />\n\t\t<xsl:variable name=\"custmerPO\" select=\"$c/S_BGM/D_1004\" />\n\t\t<xsl:variable name=\"custmerPODate\" select=\"$c/S_DTM/C_C507 [D_2005='137']/D_2380\"  />\n\t\t<xsl:variable name=\"rdd\" select = \"if ($c/S_DTM/C_C507[D_2005='64']/D_2380) then  $c/S_DTM/C_C507[D_2005='64']/D_2380 else if ($c/S_DTM/C_C507[D_2005='2']/D_2380) then $c/S_DTM/C_C507[D_2005='2']/D_2380 else ''\"/> \n\t\t<xsl:variable name=\"cdd\" select=\"$c/S_DTM/C_C507[D_2005='63']/D_2380\"/>\n\t\t<xsl:variable name=\"LOC_D_3225\" select=\"($c/G_SG25[1]/G_SG33/S_LOC/C_C517/D_3225)\" />\n\t\t<xsl:variable name=\"multiLOC\" select=\"if($c/G_SG25/G_SG33/S_LOC/C_C517[D_3225 != $LOC_D_3225]) then 'YES' else 'NO'\"/>\n\t\t<xsl:variable name=\"createMF\" select=\"if ($multiLOC ='NO') then if($LOC_D_3225 != '') then $LOC_D_3225 else if($c/G_SG12/S_LOC/C_C517/D_3225 != '') then $c/G_SG12/S_LOC/C_C517/D_3225 else 'NO' else 'NO'\"/>\n\t\t<!-- <xsl:variable name = \"multiLOC\">\n  \t\t <xsl:choose> \n    \t\t <xsl:when test=\"''\"/> \n  \t\t  <xsl:otherwise>\n        \t<xsl:for-each select='(($c/G_SG25)[position() &lt;= 999])'>\n        \t\t\t\t<xsl:variable name=\"posnrrow\" select=\"position()\" />\n        \t\t\t\t<xsl:variable name = \"first\" select=\"$c/G_SG25[$posnrrow]/G_SG33[1]/S_LOC/C_C517/D_3225\" />\n        \t\t\t\t\t<xsl:for-each select=\"(($c/G_SG25[$posnrrow]/G_SG33)[position() &lt;= 999])\">\n        \t\t\t\t\t  <xsl:variable name=\"posnrcol\" select=\"position()\" />\n        \t\t\t\t\t  <xsl:if test=\"compare($first, $c/G_SG25[$posnrrow]/G_SG33[$posnrcol]/S_LOC/C_C517/D_3225) != 0\" >\n        \t\t\t\t\t     <xsl:value-of select=\"'true'\"/>\n        \t\t\t\t\t  </xsl:if>\n        \t\t      </xsl:for-each>\n        \t\t</xsl:for-each>\n  \t\t  </xsl:otherwise>\n      </xsl:choose>\n    </xsl:variable> -->\n    <xsl:variable name=\"havemultLoc\" select=\"substring ($multiLOC , 1, 4 ) = 'true'\"/>\n\t\n\t\t\n\t\t<FSHORD03>\n\t\t\t<IDOC BEGIN=\"1\">\n\t\t\t\t<EDI_DC40 SEGMENT=\"1\">\n\t\t\t\t\t<TABNAM>EDI_DC40</TABNAM>\n\t\t\t\t\t<MANDT></MANDT>\n\t\t\t\t\t<DIRECT>2</DIRECT>\n\t\t\t\t\t<IDOCTYP>FSHORD03</IDOCTYP>\n\t\t\t\t\t<CIMTYP />\n\t\t\t\t\t<MESTYP>ORDERS</MESTYP>\n\t\t\t\t\t<MESCOD>333</MESCOD>\n\t\t\t\t\t<MESFCT />\n\t\t\t\t\t<STD>E</STD>\n\t\t\t\t\t<STDVRS></STDVRS>\n\t\t\t\t\t<STDMES></STDMES>\n\t\t\t\t\t<SNDPOR>SAPCPI</SNDPOR>\n\t\t\t\t\t<SNDPRT>KU</SNDPRT>\n\t\t\t\t\t<SNDPFC />\n\t\t\t\t\t<SNDSAD />\n\t\t\t\t\t<SNDLAD></SNDLAD>\n\t\t\t\t\t<SNDPRN>\n\t\t\t\t\t\t<xsl:value-of select=\"$sid\" />\n\t\t\t\t\t</SNDPRN>\n\t\t\t\t\t<RCVPOR>SAPS4H</RCVPOR>\n\t\t\t\t\t<RCVPRT>LS</RCVPRT>\n\t\t\t\t\t<RCVPFC />\n\t\t\t\t\t<RCVPRN>SG1CLNT511</RCVPRN>\n\t\t\t\t\t<RCVSAD />\n\t\t\t\t\t<RCVLAD></RCVLAD>\n\t\t\t\t\t<CREDAT></CREDAT>\n\t\t\t\t\t<REFINT></REFINT>\n\t\t\t\t\t<REFGRP></REFGRP>\n\t\t\t\t\t<REFMES></REFMES>\n\t\t\t\t\t<ARCKEY></ARCKEY>\n\t\t\t\t\t<SERIAL></SERIAL>\n\t\t\t\t</EDI_DC40>\n\t\t\t\t<!--started -->\n\t\t\t\t<E1EDK01 SEGMENT=\"1\">\n\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t<EMPST></EMPST>\n\t\t\t\t\t<AUGRU>BRFVAL</AUGRU>\n\t\t\t\t</E1EDK01>\n\t\t\t\t<E1EDK14 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>012</QUALF>\n\t\t\t\t\t<ORGID>BRF</ORGID>\n\t\t\t\t</E1EDK14>\n\t\t\t\t<E1EDK14 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>019</QUALF>\n\t\t\t\t\t<ORGID>EDI</ORGID>\n\t\t\t\t</E1EDK14>\n\t\t\t\t<E1EDK03 SEGMENT=\"1\">\n\t\t\t\t\t<IDDAT>002</IDDAT>\n\t\t\t\t\t<DATUM>\n\t\t\t\t\t\t<xsl:value-of select=\"$rdd\" />\n\t\t\t\t\t</DATUM>\n\t\t\t\t</E1EDK03>\n\t\t\t\t<E1EDKA1 SEGMENT=\"1\">\n\t\t\t\t\t<PARVW>AG</PARVW>\n\t\t\t\t\t<LIFNR>\n\t\t\t\t\t  <xsl:value-of select=\"$c/G_SG2/S_NAD[D_3035='BY']/C_C082/D_3039\" />\n\t\t\t\t\t</LIFNR>\n\t\t\t\t</E1EDKA1>\n\t\t\t\t<E1EDKA1 SEGMENT=\"1\">\n\t\t\t\t\t<PARVW>WE</PARVW>\n\t\t\t\t\t<LIFNR>\n\t\t\t\t\t\t<xsl:value-of\n\t\t\t\t\t\t\tselect=\"$c/G_SG2/S_NAD[D_3035='DP']/C_C082/D_3039\" />\n\t\t\t\t\t</LIFNR>\n\t\t\t\t</E1EDKA1>\n\t\t\t\t<E1EDKA1 SEGMENT=\"1\">\n\t\t\t\t\t<PARVW>RE</PARVW>\n\t\t\t\t\t<LIFNR>\n\t\t\t\t\t\t<xsl:value-of\n\t\t\t\t\t\t\tselect=\"$c/G_SG2/S_NAD[D_3035='IV']/C_C082/D_3039\" />\n\t\t\t\t\t</LIFNR>\n\t\t\t\t</E1EDKA1>\n\t\t\t\t<!-- Create MF-->\n\t\t\t\n\t\t\t\t\t<E1EDKA1 SEGMENT=\"1\">\n\t\t\t\t\t\t<PARVW>MF</PARVW>\n\t\t\t\t\t\t  <LIFNR>\n\t\t\t\t\t\t\t<xsl:value-of select=\"$c/G_SG2/S_NAD[D_3035='UC']/C_C082/D_3039\"/>\n\t\t\t\t\t\t  </LIFNR>\n\t\t\t\t\t</E1EDKA1>\n\t\t\n\t\t\t\t<!-- Complete MF-->\n\t\t\t\t\n\t\t\t\t<E1EDK02 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>001</QUALF>\n\t\t\t\t\t<BELNR>\n\t\t\t\t\t\t<xsl:value-of select=\"$custmerPO\" />\n\t\t\t\t\t</BELNR>\n\t\t\t\t\t<DATUM>\n\t\t\t\t\t\t<xsl:value-of select=\"$custmerPODate\" />\n\t\t\t\t\t</DATUM>\n\t\t\t\t</E1EDK02>\n\t\t\t\t<E1EDK17 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>001</QUALF>\n\t\t\t\t\t<LKOND></LKOND>\n\t\t\t\t\t<LKTEXT>BRF</LKTEXT>\n\t\t\t\t</E1EDK17>\n\t\t\t\t<E1EDK17 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>002</QUALF>\n\t\t\t\t\t<LKOND></LKOND>\n\t\t\t\t\t<LKTEXT>BRF</LKTEXT>\n\t\t\t\t</E1EDK17>\n\t\t\t\t<!-- Need to Check -->\n\t\t\t\t<!-- OPTIONAL-Supplier Number customer sent -->\n\t\t\t\t<!-- <xsl:for-each select='(($c/G_SG2/S_NAD)[position() &lt;= 999999])'>\n\t\t\t\t  <xsl:variable name=\"c\" select=\".\" />\n\t\t\t\t\t<xsl:variable name=\"posnr\" select=\"position()\" />\n\t\t\t\t  <E1EDKT1 SEGMENT=\"1\">\n  \t\t\t\t\t<TDID>ZH01</TDID>\n  \t\t\t\t\t<TSSPRAS>EN</TSSPRAS>\n  \t\t\t\t\t<E1EDKT2 SEGMENT=\"1\">\n  \t\t\t\t\t\t<TDLINE>\n  \t\t\t\t\t\t\t<xsl:value-of \n  \t\t\t\t\t\t\t  select=\"if ($c/C_C082/D_3039 != '') then (concat($c/D_3035,':',$c/C_C082/D_3039,';')) else (concat($c/D_3035,':',$c/C_C082/D_3036,';'))\"/>\n  \t\t\t\t\t\t</TDLINE>\n  \t\t\t\t\t\t<TDFORMAT>/</TDFORMAT>\n  \t\t\t\t\t</E1EDKT2>\n\t\t\t\t  </E1EDKT1>\n\t\t\t\t</xsl:for-each> -->\n\t\n\t\t\t\t<!-- For each EDI ITEM -->\n\t\t\t\t<xsl:for-each\n\t\t\t\t\tselect=\"(($c/G_SG25)[position() &lt;= 999999])\">\n\t\t\t\t\t<xsl:variable name=\"c\" select=\".\" />\n\t\t\t\t\t<xsl:variable name=\"posnr\" select=\"position()\" />\n\t\t\t\t\t<E1EDP01 SEGMENT=\"1\">\n\t\t\t\t\t\t<POSEX>\n\t\t\t\t\t\t <xsl:value-of select=\"if ($c/S_LIN/D_1082 != '') then $c/S_LIN/D_1082 else $posnr\"/> \n\t\t\t\t\t\t</POSEX>\n\t\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t\t<MENGE>\n\t\t\t\t\t\t\t<xsl:value-of select=\"$c/S_QTY/C_C186[D_6063 = '21']/D_6060\" />\n\t\t\t\t\t\t</MENGE>\n\t\t\t\t\t\t<MENEE>EA</MENEE>\n\t\t\t\t\t\t<VPREI>\n\t\t\t\t\t\t\t<xsl:value-of\n\t\t\t\t\t\t\t\tselect=\"$c/G_SG28/S_PRI/C_C509[D_5125 = 'AAA']/D_5118\" />\n\t\t\t\t\t\t</VPREI>\n\t\t\t\t\t\t<PEINH>1</PEINH>\n\t\t\t\t\t\t<xsl:variable name=\"currency\" select=\"$c/G_SG28/S_CUX/C_C504/D_6345\"/>\n\t\t\t\t\t\t<CURCY><xsl:value-of select=\"$currency\"/></CURCY>\n\t\t\t\t\t\t<MATNR>\n\t\t\t\t\t\t\t<xsl:value-of select=\"$c/S_LIN/C_C212/D_7140\" />\n\t\t\t\t\t\t</MATNR>\n\t\t\t\t\t\t\n\t           <!-- OPTIONAL if Customer sending MSRP/CTP -->\n\t\t\t\t\t <xsl:if test=\"$c/G_SG28/S_PRI/C_C509/D_5125 = 'AAB'\">\n  \t\t\t\t\t\t<E1EDP05 SEGMENT=\"1\">\n  \t\t\t\t\t\t\t<ALCKZ>+</ALCKZ>\n  \t\t\t\t\t\t\t<KSCHL>ZEDR</KSCHL>\n  \t\t\t\t\t\t\t<KRATE>\n  \t\t\t\t\t\t\t\t<xsl:value-of\n  \t\t\t\t\t\t\t\t\tselect=\"$c/G_SG28/S_PRI/C_C509[D_5125 = 'AAB']/D_5118\" />\n  \t\t\t\t\t\t\t</KRATE>\n  \t\t\t\t\t\t\t<UPRBS>1</UPRBS>\n  \t\t\t\t\t\t</E1EDP05>\n\t\t\t\t\t\t</xsl:if>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<E1EDP20 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<WMENG>\n\t\t\t\t\t\t\t\t<xsl:value-of select=\"$c/S_QTY/C_C186[D_6063 = '21']/D_6060\" />\n\t\t\t\t\t\t\t</WMENG>\n\t\t\t\t\t\t</E1EDP20>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<E1EDP19 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<QUALF>001</QUALF>\n\t\t\t\t\t\t\t<IDTNR><xsl:value-of select=\"$c/S_PIA/C_C212[D_7143='SA']/D_7140\"/></IDTNR>\n\t\t\t\t\t\t</E1EDP19>\n\t\t\t\t\t\t<E1EDP19 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<QUALF>002</QUALF>\n\t\t\t\t\t\t\t<IDTNR>BRFTEXT</IDTNR>\n\t\t\t\t\t\t\t<KTEXT>BRFTEXT</KTEXT>\n\t\t\t\t\t\t</E1EDP19>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<E1EDPT1 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<TDID>ZI01</TDID>\n\t\t\t\t\t\t\t<TSSPRAS>EN</TSSPRAS>\n\t\t\t\t\t\t\t<E1EDPT2 SEGMENT=\"1\">\n\t\t\t\t\t\t\t\t<TDLINE></TDLINE>\n\t\t\t\t\t\t\t\t<TDFORMAT><xsl:value-of \n  \t\t\t\t\t\t\t  select=\"concat($c/S_LIN/C_C212/D_7140,'/',$c/S_PIA/C_C212[D_7143='IN']/D_7140,'/',$c/S_PIA/C_C212[D_7143='SA']/D_7140,'/',$c/S_IMD[D_7077='F']/C_C273/D_7008)\"/></TDFORMAT>\n\t\t\t\t\t\t\t</E1EDPT2>\n\t\t\t\t\t\t</E1EDPT1>\n\t\t\t\t\t\t\n\t\t\t\t\t  <!-- Logic for multiple LOC -->\n\t\t\t\t\t  <xsl:if test=\"$multiLOC = 'YES'\" >\n\t\t\t\t\t\t<xsl:for-each select=\"$c/G_SG33\">\n\t\t\t\t\t\t  <xsl:variable name=\"c\" select=\".\" />\n\t\t\t\t\t\t  <xsl:if test = \"$c/S_LOC/C_C517/D_3225 != ''\">\n\t\t\t\t\t\t\t<E1EDP34 SEGMENT=\"1\">\n\t\t\t\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t\t\t\t<PARTNER_INDICATOR>M</PARTNER_INDICATOR>\n\t\t\t\t\t\t\t\t<EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"$c/S_LOC/C_C517/D_3225\" />\n\t\t\t\t\t\t\t\t</EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t<ORDER_QUANTITY>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"($c/S_QTY/C_C186/D_6060)\" />\n\t\t\t\t\t\t\t   </ORDER_QUANTITY>\n\t\t\t\t\t\t\t</E1EDP34>\n\t\t\t\t\t\t  </xsl:if>\n\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t</xsl:if>\n\t\t\t\t\t\t<!-- end for loop -->\n\t\t\t\t\t</E1EDP01>\n\t\t\t\t</xsl:for-each>\n\t\t\t\t<E1EDS01 SEGMENT=\"1\">\n                    <SUMID>\n                        <xsl:value-of select=\"$c/S_CNT/C_C270[D_6069='2']/D_6066\" />\n                    </SUMID>\n                    <SUMME>\n                        <xsl:value-of select=\"$c/S_CNT/C_C270[D_6069='1']/D_6066\" />\n                    </SUMME>\n                </E1EDS01>\n\t\t\t\t<E1EDK37 SEGMENT=\"1\"> \n\t\t\t\t  <FSH_CANDATE> <xsl:value-of select=\"$cdd\"/> </FSH_CANDATE> \n\t\t\t\t</E1EDK37>\t\t\n\t\t\t</IDOC>\n\t\t</FSHORD03>\n\t</xsl:template>\n</xsl:stylesheet>",
+    "matched_segments_count": 16,
+    "total_segments_count": 16
+  },
+  {
+    "id": "7282eae0-e727-4807-ab04-057f0521a883",
+    "score": 77,
+    "customer": "EL CORTE INGLES S.A.",
+    "format": "EDIFACT",
+    "segments": [
+      {
+        "name": "BGM",
+        "matched": true
+      },
+      {
+        "name": "RFF",
+        "matched": true
+      },
+      {
+        "name": "IMD",
+        "matched": true
+      },
+      {
+        "name": "PIA",
+        "matched": true
+      },
+      {
+        "name": "UNT",
+        "matched": true
+      },
+      {
+        "name": "CUX",
+        "matched": true
+      },
+      {
+        "name": "LIN",
+        "matched": true
+      },
+      {
+        "name": "UNS",
+        "matched": true
+      },
+      {
+        "name": "DTM",
+        "matched": true
+      },
+      {
+        "name": "UNH",
+        "matched": true
+      },
+      {
+        "name": "QTY",
+        "matched": true
+      },
+      {
+        "name": "CNT",
+        "matched": true
+      },
+      {
+        "name": "UNZ",
+        "matched": true
+      },
+      {
+        "name": "UNB",
+        "matched": true
+      },
+      {
+        "name": "PRI",
+        "matched": true
+      },
+      {
+        "name": "NAD",
+        "matched": true
+      }
+    ],
+    "missing_qualifiers": [
+      "DTM:171",
+      "BGM:220",
+      "RFF:ADE",
+      "RFF:CR",
+      "RFF:ON"
+    ],
+    "xslt_code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!--  *******************************************************************************************************************************************************************************\n Create Date:\t11-OCT-2023 \tCreated By:\tHamsha\n Change Date:   20-NOV-2023     Changed By: Hamsha\n EDI Team\t:\tSolar EDI Team\n Customers\t:\tEL CORTE INGLES GRANDES ARMAZENS, S (10050404), EL CORTE INGLES S.A. (10050403), El Corte Ingles  S.A. (10020657), EL CORTE INGLES GRANDES ARMAZENS S.(10020289)\n *********************************************************************************************************************************************************************************** -->\n<xsl:stylesheet\n\txmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\"\n\txmlns:xs=\"http://www.w3.org/2001/XMLSchema\"\n\texclude-result-prefixes=\"#all\" version=\"2.0\">\n\t<xsl:output encoding=\"UTF-8\" method=\"xml\" indent = \"yes\" />\n\n\t<xsl:template match=\"/\">\n\t\t<xsl:variable name=\"c1\" select=\"/*\" />\n\t\t<xsl:variable name=\"h\" select=\"//S_UNB\" />\n\t\t<xsl:variable name=\"sid\" select=\"normalize-space($h/C_S002/D_0004)\" />\n\t\t<xsl:variable name=\"c\" select=\"//M_ORDERS\" />\n\t\t<xsl:variable name=\"custmerPO\" select=\"$c/S_BGM/D_1004\" />\n\t\t<xsl:variable name=\"custmerPODate\" select=\"$c/S_DTM/C_C507 [D_2005='137']/D_2380\"  />\n\t\t<xsl:variable name=\"rdd\" select = \"$c/S_DTM/C_C507[D_2005='2']/D_2380\"/>\n\t\t<xsl:variable name=\"cdd\" select=\"$c/S_DTM/C_C507[D_2005='63']/D_2380\"/>\n\n\t\t<xsl:variable name = \"multiLOC\">\n  \t\t <xsl:choose>\n    \t\t <xsl:when test=\"''\"/>\n  \t\t  <xsl:otherwise>\n        \t<xsl:for-each select='(($c/G_SG25)[position() &lt;= 999])'>\n        \t\t\t\t<xsl:variable name=\"posnrrow\" select=\"position()\" />\n        \t\t\t\t<xsl:variable name = \"first\" select=\"$c/G_SG25[$posnrrow]/G_SG33[1]/S_LOC/C_C517/D_3225\" />\n        \t\t\t\t\t<xsl:for-each select=\"(($c/G_SG25[$posnrrow]/G_SG33)[position() &lt;= 999])\">\n        \t\t\t\t\t  <xsl:variable name=\"posnrcol\" select=\"position()\" />\n        \t\t\t\t\t  <xsl:if test=\"compare($first, $c/G_SG25[$posnrrow]/G_SG33[$posnrcol]/S_LOC/C_C517/D_3225) != 0\" >\n        \t\t\t\t\t     <xsl:value-of select=\"'true'\"/>\n        \t\t\t\t\t  </xsl:if>\n        \t\t      </xsl:for-each>\n        \t\t</xsl:for-each>\n  \t\t  </xsl:otherwise>\n      </xsl:choose>\n    </xsl:variable>\n    <xsl:variable name=\"havemultLoc\" select=\"substring ($multiLOC , 1, 4 ) = 'true' \"/>\n\t<xsl:variable name=\"currency\" select=\"$c/G_SG7/S_CUX/C_C504/D_6345\"/>\n\n\t\t<FSHORD03>\n\t\t\t<IDOC BEGIN=\"1\">\n\t\t\t\t<EDI_DC40 SEGMENT=\"1\">\n\t\t\t\t\t<TABNAM>EDI_DC40</TABNAM>\n\t\t\t\t\t<MANDT></MANDT>\n\t\t\t\t\t<DIRECT>2</DIRECT>\n\t\t\t\t\t<IDOCTYP>FSHORD03</IDOCTYP>\n\t\t\t\t\t<CIMTYP />\n\t\t\t\t\t<MESTYP>ORDERS</MESTYP>\n\t\t\t\t\t<MESCOD>333</MESCOD>\n\t\t\t\t\t<MESFCT />\n\t\t\t\t\t<STD>X</STD>\n\t\t\t\t\t<STDVRS>D96A</STDVRS>\n\t\t\t\t\t<STDMES>ORDERS</STDMES>\n\t\t\t\t\t<SNDPOR>SAPCPI</SNDPOR>\n\t\t\t\t\t<SNDPRT>KU</SNDPRT>\n\t\t\t\t\t<SNDPFC />\n\t\t\t\t\t<SNDSAD />\n\t\t\t\t\t<SNDLAD></SNDLAD>\n\t\t\t\t\t<SNDPRN>\n\t\t\t\t\t\t<xsl:value-of select=\"$sid\" />\n\t\t\t\t\t</SNDPRN>\n\t\t\t\t\t<RCVPOR>SAPS4H</RCVPOR>\n\t\t\t\t\t<RCVPRT>LS</RCVPRT>\n\t\t\t\t\t<RCVPFC />\n\t\t\t\t\t<RCVPRN>SG1CLNT511</RCVPRN>\n\t\t\t\t\t<RCVSAD />\n\t\t\t\t\t<RCVLAD></RCVLAD>\n\t\t\t\t\t<CREDAT></CREDAT>\n\t\t\t\t\t<REFINT></REFINT>\n\t\t\t\t\t<REFGRP></REFGRP>\n\t\t\t\t\t<REFMES></REFMES>\n\t\t\t\t\t<ARCKEY></ARCKEY>\n\t\t\t\t\t<SERIAL></SERIAL>\n\t\t\t\t</EDI_DC40>\n\t\t\t\t<!--started -->\n\t\t\t\t<E1EDK01 SEGMENT=\"1\">\n\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t<EMPST><xsl:value-of select=\"$c/G_SG2/G_SG3/S_RFF/C_C506[D_1153='API']/D_1154\"/></EMPST><!-- Department Code -->\n\t\t\t\t\t<AUGRU>BRFVAL</AUGRU>\n\t\t\t\t</E1EDK01>\n\t\t\t\t<E1EDK14 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>012</QUALF>\n\t\t\t\t\t<ORGID>BRF</ORGID>\n\t\t\t\t</E1EDK14>\n\t\t\t\t<E1EDK14 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>019</QUALF>\n\t\t\t\t\t<ORGID>EDI</ORGID>\n\t\t\t\t</E1EDK14>\n\t\t\t\t<E1EDK03 SEGMENT=\"1\">\n\t\t\t\t\t<IDDAT>002</IDDAT>\n\t\t\t\t\t<DATUM>\n\t\t\t\t\t\t<xsl:value-of select=\"$rdd\" />\n\t\t\t\t\t</DATUM>\n\t\t\t\t</E1EDK03>\n\t\t\t\t<E1EDKA1 SEGMENT=\"1\">\n\t\t\t\t\t<PARVW>AG</PARVW>\n\t\t\t\t\t<LIFNR>\n\t\t\t\t\t  <xsl:value-of select=\"$c/G_SG2/S_NAD[D_3035='BY']/C_C082/D_3039\" />\n\t\t\t\t\t</LIFNR>\n\t\t\t\t</E1EDKA1>\n\t\t\t\t<E1EDKA1 SEGMENT=\"1\">\n\t\t\t\t\t<PARVW>WE</PARVW>\n\t\t\t\t\t<LIFNR>\n\t\t\t\t\t\t<xsl:value-of\n\t\t\t\t\t\t\tselect=\"$c/G_SG2/S_NAD[D_3035='DP']/C_C082/D_3039\" />\n\t\t\t\t\t</LIFNR>\n\t\t\t\t</E1EDKA1>\n\n\t\t\t\t<!-- Create MF-->\n\t\t\t\t\t<E1EDKA1 SEGMENT=\"1\">\n\t\t\t\t\t\t<PARVW>MF</PARVW>\n\t\t\t\t\t\t  <LIFNR>\n\t\t\t\t\t\t\t<xsl:value-of select=\"$c/G_SG2/S_NAD[D_3035='BY']/C_C082/D_3039\" />\n\t\t\t\t\t\t  </LIFNR>\n\t\t\t\t\t</E1EDKA1>\n\t\t\t\t<!-- Complete MF-->\n\n\t\t\t\t<E1EDK02 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>001</QUALF>\n\t\t\t\t\t<BELNR>\n\t\t\t\t\t\t<xsl:value-of select=\"$custmerPO\" />\n\t\t\t\t\t</BELNR>\n\t\t\t\t\t<DATUM>\n\t\t\t\t\t\t<xsl:value-of select=\"$custmerPODate\" />\n\t\t\t\t\t</DATUM>\n\t\t\t\t</E1EDK02>\n\t\t\t\t<E1EDK17 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>001</QUALF>\n\t\t\t\t\t<LKOND></LKOND>\n\t\t\t\t\t<LKTEXT>BRF</LKTEXT>\n\t\t\t\t</E1EDK17>\n\t\t\t\t<E1EDK17 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>002</QUALF>\n\t\t\t\t\t<LKOND></LKOND>\n\t\t\t\t\t<LKTEXT>BRF</LKTEXT>\n\t\t\t\t</E1EDK17>\n\t\t\t\t<!-- Need to check -->\n\t\t\t\t<!-- OPTIONAL-Supplier Number customer sent -->\n\t\t\t\t<!-- <xsl:for-each select='(($c/G_SG2/S_NAD)[position() &lt;= 999999])'>\n\t\t\t\t  <xsl:variable name=\"c\" select=\".\" />\n\t\t\t\t\t<xsl:variable name=\"posnr\" select=\"position()\" />\n\t\t\t\t  <E1EDKT1 SEGMENT=\"1\">\n  \t\t\t\t\t<TDID>ZH01</TDID>\n  \t\t\t\t\t<TSSPRAS>EN</TSSPRAS>\n  \t\t\t\t\t<E1EDKT2 SEGMENT=\"1\">\n  \t\t\t\t\t\t<TDLINE>\n  \t\t\t\t\t\t\t<xsl:value-of\n  \t\t\t\t\t\t\t  select=\"if ($c/C_C082/D_3039 != '') then (concat($c/D_3035,':',$c/C_C082/D_3039,';')) else (concat($c/D_3035,':',$c/C_C082/D_3036,';'))\"/>\n  \t\t\t\t\t\t</TDLINE>\n  \t\t\t\t\t\t<TDFORMAT>/</TDFORMAT>\n  \t\t\t\t\t</E1EDKT2>\n\t\t\t\t  </E1EDKT1>\n\t\t\t\t</xsl:for-each> -->\n\t\t\t\t<!-- Need to check -->\n\t\t\t\t<!-- FTX if the D_4440 != ''-->\n\t\t\t\t<!-- <xsl:for-each select='(($c/S_FTX)[position() &lt;= 999999])'>\n\t\t\t\t  <xsl:variable name=\"c\" select=\".\" />\n\t\t\t\t\t<xsl:variable name=\"posnr\" select=\"position()\" />\n\t\t\t\t\t\t<xsl:if test=\"$c/C_C108/D_4440 != ''\">\n  \t\t\t\t  <E1EDKT1 SEGMENT=\"1\">\n    \t\t\t\t\t<TDID>ZH02</TDID>\n    \t\t\t\t\t<TSSPRAS>EN</TSSPRAS>\n    \t\t\t\t\t<E1EDKT2 SEGMENT=\"1\">\n    \t\t\t\t\t\t<TDLINE>\n    \t\t\t\t\t\t\t<xsl:value-of\n    \t\t\t\t\t\t\t  select=\"$c/C_C108/D_4440 \"/>\n    \t\t\t\t\t\t</TDLINE>\n    \t\t\t\t\t\t<TDFORMAT>/</TDFORMAT>\n    \t\t\t\t\t</E1EDKT2>\n  \t\t\t\t  </E1EDKT1>\n  \t\t\t\t</xsl:if>\n\t\t\t\t</xsl:for-each> -->\n\n\t\t\t\t<!-- For each EDI ITEM -->\n\t\t\t\t<xsl:for-each\n\t\t\t\t\tselect=\"(($c/G_SG25)[position() &lt;= 999999])\">\n\t\t\t\t\t<xsl:variable name=\"c\" select=\".\" />\n\t\t\t\t\t<xsl:variable name=\"posnr\" select=\"position()\" />\n\t\t\t\t\t<E1EDP01 SEGMENT=\"1\">\n\t\t\t\t\t\t<POSEX>\n\t\t\t\t\t\t <xsl:value-of select=\"if ($c/S_LIN/D_1082 != '') then $c/S_LIN/D_1082 else $posnr\"/>\n\t\t\t\t\t\t</POSEX>\n\t\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t\t<MENGE>\n\t\t\t\t\t\t\t<xsl:value-of select=\"$c/S_QTY/C_C186[D_6063 = '21']/D_6060\" />\n\t\t\t\t\t\t</MENGE>\n\t\t\t\t\t\t<MENEE>EA</MENEE>\n\t\t\t\t\t\t<VPREI>\n\t\t\t\t\t\t\t<xsl:value-of\n\t\t\t\t\t\t\t\tselect=\"$c/G_SG28/S_PRI/C_C509[D_5125 = 'AAA']/D_5118\" />\n\t\t\t\t\t\t</VPREI>\n\t\t\t\t\t\t<PEINH>1</PEINH>\n\t\t\t\t\t\t<CURCY><xsl:value-of select=\"$currency\"/></CURCY>\n\t\t\t\t\t\t<MATNR>\n\t\t\t\t\t\t\t<xsl:value-of select=\"$c/S_LIN/C_C212/D_7140\" />\n\t\t\t\t\t\t</MATNR>\n\n\t\t\t\t<!-- Need to chek  if to be mapped when PRI+AAA and PRI+AAB is same-->\n\t\t\t  <!-- OPTIONAL if Customer sending MSRP/CTP --> \n\t\t\t\t\t\t<xsl:if test=\"$c/G_SG28/S_PRI/C_C509/D_5125 = 'AAB'\">\n  \t\t\t\t\t\t<E1EDP05 SEGMENT=\"1\">\n  \t\t\t\t\t\t\t<ALCKZ>+</ALCKZ>\n  \t\t\t\t\t\t\t<KSCHL>ZEDR</KSCHL>\n  \t\t\t\t\t\t\t<KRATE>\n  \t\t\t\t\t\t\t\t<xsl:value-of\n  \t\t\t\t\t\t\t\t\tselect=\"$c/G_SG28/S_PRI/C_C509[D_5125 = 'AAB']/D_5118\" />\n  \t\t\t\t\t\t\t</KRATE>\n  \t\t\t\t\t\t\t<UPRBS>1</UPRBS>\n  \t\t\t\t\t\t</E1EDP05>\n\t\t\t\t\t\t</xsl:if>\n\n\t\t\t\t\t\t<E1EDP20 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<WMENG>\n\t\t\t\t\t\t\t\t<xsl:value-of select=\"$c/S_QTY/C_C186[D_6063 = '21']/D_6060\" />\n\t\t\t\t\t\t\t</WMENG>\n\t\t\t\t\t\t</E1EDP20>\n\n\t\t\t\t\t\t<E1EDP19 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<QUALF>001</QUALF>\n\t\t\t\t\t\t\t<IDTNR><xsl:value-of select=\"$c/S_PIA/C_C212[D_7143='IN']/D_7140\"/></IDTNR><!-- Need to check -->\n\t\t\t\t\t\t</E1EDP19>\n\t\t\t\t\t\t<E1EDP19 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<QUALF>002</QUALF>\n\t\t\t\t\t\t\t<IDTNR>BRFTEXT</IDTNR>\n\t\t\t\t\t\t\t<KTEXT>BRFTEXT</KTEXT>\n\t\t\t\t\t\t</E1EDP19>\n\t\t\t\t\t\t<E1EDPT1 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<TDID>ZI01</TDID>\n\t\t\t\t\t\t\t<TSSPRAS>EN</TSSPRAS>\n\t\t\t\t\t\t\t<E1EDPT2 SEGMENT=\"1\">\n\t\t\t\t\t\t\t\t<TDLINE>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"concat($c/S_LIN/C_C212/D_7140,'/',$c/S_PIA/C_C212[D_7143='IN']/D_7140,'/',$c/S_IMD[D_7081='DSC']/C_C273/D_7008,' ',$c/S_IMD[D_7081='DSC']/C_C273/D_7008_2)\"/>\n\t\t\t\t\t\t\t\t</TDLINE>\n\t\t\t\t\t\t\t\t<TDFORMAT>/</TDFORMAT>\n\t\t\t\t\t\t\t</E1EDPT2>\n\t\t\t\t\t\t</E1EDPT1>\n\t\t\t\t\t  <!-- Logic for multiple LOC -->\n\t\t\t\t\t  <xsl:if test=\"$havemultLoc\" >\n\t\t\t\t\t\t<xsl:for-each select=\"$c/G_SG33\">\n\t\t\t\t\t\t  <xsl:variable name=\"c\" select=\".\" />\n\t\t\t\t\t\t  <xsl:if test = \"$c/S_LOC/C_C517/D_3225 != ''\">\n\t\t\t\t\t\t\t<E1EDP34 SEGMENT=\"1\">\n\t\t\t\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t\t\t\t<PARTNER_INDICATOR>M</PARTNER_INDICATOR>\n\t\t\t\t\t\t\t\t<EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"$c/S_LOC/C_C517/D_3225\" />\n\t\t\t\t\t\t\t\t</EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t<ORDER_QUANTITY>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"($c/S_QTY/C_C186/D_6060)\" />\n\t\t\t\t\t\t\t   </ORDER_QUANTITY>\n\t\t\t\t\t\t\t</E1EDP34>\n\t\t\t\t\t\t  </xsl:if>\n\n\t\t\t\t\t\t  <xsl:if test = \"$c/S_LOC/C_C519/D_3223 != ''\">\n\t\t\t\t\t\t\t<E1EDP34 SEGMENT=\"1\">\n\t\t\t\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t\t\t\t<PARTNER_INDICATOR>M</PARTNER_INDICATOR>\n\t\t\t\t\t\t\t\t<EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"$c/S_LOC/C_C519/D_3223\" />\n\t\t\t\t\t\t\t\t</EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t<ORDER_QUANTITY>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"($c/S_QTY/C_C186/D_6060)\" />\n\t\t\t\t\t\t\t   </ORDER_QUANTITY>\n\t\t\t\t\t\t\t</E1EDP34>\n\t\t\t\t\t\t  </xsl:if>\n\n\t\t\t\t\t\t  <xsl:if test = \"$c/S_LOC/C_C553/D_3233 != ''\">\n\t\t\t\t\t\t\t<E1EDP34 SEGMENT=\"1\">\n\t\t\t\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t\t\t\t<PARTNER_INDICATOR>M</PARTNER_INDICATOR>\n\t\t\t\t\t\t\t\t<EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"$c/S_LOC/C_C553/D_3233\" />\n\t\t\t\t\t\t\t\t</EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t<ORDER_QUANTITY>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"($c/S_QTY/C_C186/D_6060)\" />\n\t\t\t\t\t\t\t   </ORDER_QUANTITY>\n\t\t\t\t\t\t\t</E1EDP34>\n\t\t\t\t\t\t  </xsl:if>\n\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t</xsl:if>\n\t\t\t\t\t\t<!-- end for loop -->\n\t\t\t\t\t</E1EDP01>\n\t\t\t\t</xsl:for-each>\n\t\t\t\t<E1EDS01 SEGMENT=\"1\">\n                    <SUMID>\n                        <xsl:value-of select=\"$c/S_CNT/C_C270[D_6069='2']/D_6066\" />\n                    </SUMID>\n                    <SUMME>\n                        <xsl:value-of select=\"$c/S_CNT/C_C270[D_6069='1']/D_6066\" />\n                    </SUMME>\n                </E1EDS01>\n\t\t\t\t<E1EDK37 SEGMENT=\"1\">\n\t\t\t\t  <FSH_CANDATE> <xsl:value-of select=\"$cdd\"/> </FSH_CANDATE>\n\t\t\t\t</E1EDK37>\n\n\t\t\t</IDOC>\n\t\t</FSHORD03>\n\t</xsl:template>\n</xsl:stylesheet>\n",
+    "matched_segments_count": 16,
+    "total_segments_count": 16
+  },
+  {
+    "id": "21ec0c45-5cf6-463e-bc8e-9e5f6d8e5799",
+    "score": 75,
+    "customer": "INNO",
+    "format": "EDIFACT",
+    "segments": [
+      {
+        "name": "BGM",
+        "matched": true
+      },
+      {
+        "name": "RFF",
+        "matched": true
+      },
+      {
+        "name": "IMD",
+        "matched": true
+      },
+      {
+        "name": "PIA",
+        "matched": true
+      },
+      {
+        "name": "UNT",
+        "matched": true
+      },
+      {
+        "name": "CUX",
+        "matched": true
+      },
+      {
+        "name": "LIN",
+        "matched": true
+      },
+      {
+        "name": "UNS",
+        "matched": true
+      },
+      {
+        "name": "DTM",
+        "matched": true
+      },
+      {
+        "name": "UNH",
+        "matched": true
+      },
+      {
+        "name": "QTY",
+        "matched": true
+      },
+      {
+        "name": "UNZ",
+        "matched": true
+      },
+      {
+        "name": "UNB",
+        "matched": true
+      },
+      {
+        "name": "PRI",
+        "matched": true
+      },
+      {
+        "name": "NAD",
+        "matched": true
+      },
+      {
+        "name": "CNT",
+        "matched": false
+      }
+    ],
+    "missing_qualifiers": [
+      "DTM:171",
+      "RFF:CR",
+      "DTM:2",
+      "RFF:ADE",
+      "RFF:ON"
+    ],
+    "xslt_code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!--  **************************************************************\n Create Date:\t27-NOV-2023 \tCreated By:\tHamsha\n EDI Team\t:\tSolar EDI Team\n Customers\t:\tInno(4332243000001)\n ************************************************************** -->\n<xsl:stylesheet\n\txmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\"\n\txmlns:xs=\"http://www.w3.org/2001/XMLSchema\"\n\texclude-result-prefixes=\"#all\" version=\"2.0\">\n\t<xsl:output encoding=\"UTF-8\" method=\"xml\"/>\n\n\t<xsl:template match=\"/\">\n\t\t<xsl:variable name=\"c1\" select=\"/*\" />\n\t\t<xsl:variable name=\"h\" select=\"//S_UNB\" />\n\t\t<xsl:variable name=\"sid\" select=\"normalize-space($h/C_S002/D_0004)\" />\n\t\t<xsl:variable name=\"c\" select=\"//M_ORDERS\" />\n\t\t<xsl:variable name=\"custmerPO\" select=\"$c/S_BGM/D_1004\" />\n\t\t<xsl:variable name=\"custmerPODate\" select=\"$c/S_DTM/C_C507 [D_2005='137']/D_2380\"  />\n\t\t<xsl:variable name=\"rdd\" select = \"if($c/S_DTM/C_C507[D_2005='2']/D_2380) then $c/S_DTM/C_C507[D_2005='2']/D_2380 else $c/S_DTM/C_C507[D_2005='64']/D_2380\"/>\n\t\t<xsl:variable name=\"cdd\" select = \"$c/S_DTM/C_C507[D_2005='63']/D_2380\"/>\n\t\t<xsl:variable name=\"currency\" select=\"$c/G_SG7/S_CUX/C_C504/D_6345\"/>\n\t\t<xsl:variable name = \"multiLOC\">\n  \t\t <xsl:choose>\n    \t\t <xsl:when test=\"''\"/>\n  \t\t  <xsl:otherwise>\n        \t<xsl:for-each select='(($c/G_SG25)[position() &lt;= 999])'>\n        \t\t\t\t<xsl:variable name=\"posnrrow\" select=\"position()\" />\n        \t\t\t\t<xsl:variable name = \"first\" select=\"$c/G_SG25[$posnrrow]/G_SG33[1]/S_LOC/C_C517/D_3225\" />\n        \t\t\t\t\t<xsl:for-each select=\"(($c/G_SG25[$posnrrow]/G_SG33)[position() &lt;= 999])\">\n        \t\t\t\t\t  <xsl:variable name=\"posnrcol\" select=\"position()\" />\n        \t\t\t\t\t  <xsl:if test=\"compare($first, $c/G_SG25[$posnrrow]/G_SG33[$posnrcol]/S_LOC/C_C517/D_3225) != 0\" >\n        \t\t\t\t\t     <xsl:value-of select=\"'true'\"/>\n        \t\t\t\t\t  </xsl:if>\n        \t\t      </xsl:for-each>\n        \t\t</xsl:for-each>\n  \t\t  </xsl:otherwise>\n      </xsl:choose>\n    </xsl:variable>\n    <xsl:variable name=\"havemultLoc\" select=\"substring ($multiLOC , 1, 4 ) = 'true' \"/>\n\n\t\t<FSHORD03>\n\t\t\t<IDOC BEGIN=\"1\">\n\t\t\t\t<EDI_DC40 SEGMENT=\"1\">\n\t\t\t\t\t<TABNAM>EDI_DC40</TABNAM>\n\t\t\t\t\t<MANDT></MANDT>\n\t\t\t\t\t<DIRECT>2</DIRECT>\n\t\t\t\t\t<IDOCTYP>FSHORD03</IDOCTYP>\n\t\t\t\t\t<CIMTYP />\n\t\t\t\t\t<MESTYP>ORDERS</MESTYP>\n\t\t\t\t\t<MESCOD>333</MESCOD>\n\t\t\t\t\t<MESFCT />\n\t\t\t\t\t<STD>E</STD>\n\t\t\t\t\t<STDVRS>D96A</STDVRS>\n\t\t\t\t\t<STDMES>ORDERS</STDMES>\n\t\t\t\t\t<SNDPOR>SAPCPI</SNDPOR>\n\t\t\t\t\t<SNDPRT>KU</SNDPRT>\n\t\t\t\t\t<SNDPFC />\n\t\t\t\t\t<SNDSAD />\n\t\t\t\t\t<SNDLAD></SNDLAD>\n\t\t\t\t\t<SNDPRN>\n\t\t\t\t\t\t<xsl:value-of select=\"$sid\" />\n\t\t\t\t\t</SNDPRN>\n\t\t\t\t\t<RCVPOR>SAPS4H</RCVPOR>\n\t\t\t\t\t<RCVPRT>LS</RCVPRT>\n\t\t\t\t\t<RCVPFC />\n\t\t\t\t\t<RCVPRN>SG1CLNT511</RCVPRN>\n\t\t\t\t\t<RCVSAD />\n\t\t\t\t\t<RCVLAD></RCVLAD>\n\t\t\t\t\t<CREDAT></CREDAT>\n\t\t\t\t\t<REFINT></REFINT>\n\t\t\t\t\t<REFGRP></REFGRP>\n\t\t\t\t\t<REFMES></REFMES>\n\t\t\t\t\t<ARCKEY></ARCKEY>\n\t\t\t\t\t<SERIAL></SERIAL>\n\t\t\t\t</EDI_DC40>\n\t\t\t\t<!--started -->\n\t\t\t\t<E1EDK01 SEGMENT=\"1\">\n\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t<EMPST><xsl:value-of select=\"$c/G_SG2/G_SG5/S_CTA[D_3139='PD']/C_C056/D_3413\"/></EMPST>\n\t\t\t\t\t<AUGRU>BRFVAL</AUGRU>\n\t\t\t\t</E1EDK01>\n\t\t\t\t<E1EDK14 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>012</QUALF>\n\t\t\t\t\t<ORGID>BRF</ORGID>\n\t\t\t\t</E1EDK14>\n\t\t\t\t<E1EDK14 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>019</QUALF>\n\t\t\t\t\t<ORGID>EDI</ORGID>\n\t\t\t\t</E1EDK14>\n\t\t\t\t<E1EDK03 SEGMENT=\"1\">\n\t\t\t\t\t<IDDAT>002</IDDAT>\n\t\t\t\t\t<DATUM>\n\t\t\t\t\t\t<xsl:value-of select=\"$rdd\" />\n\t\t\t\t\t</DATUM>\n\t\t\t\t</E1EDK03>\n\t\t\t\t<E1EDKA1 SEGMENT=\"1\">\n\t\t\t\t\t<PARVW>AG</PARVW>\n\t\t\t\t\t<LIFNR>\n\t\t\t\t\t  <xsl:value-of select=\"$c/G_SG2/S_NAD[D_3035='BY']/C_C082/D_3039\" />\n\t\t\t\t\t</LIFNR>\n\t\t\t\t</E1EDKA1>\n\t\t\t\t<!-- NAD+BY is mapped in SI map for E1EDKA1 WE -->\n\t\t\t\t<E1EDKA1 SEGMENT=\"1\">\n\t\t\t\t\t<PARVW>WE</PARVW>\n\t\t\t\t\t<LIFNR>\n\t\t\t\t\t\t<xsl:value-of\n\t\t\t\t\t\t\tselect=\"$c/G_SG2/S_NAD[D_3035='DP']/C_C082/D_3039\" />\n\t\t\t\t\t</LIFNR>\n\t\t\t\t</E1EDKA1>\n\n\t\t\t\t<!-- Create MF-->\n\t\t\t\t<xsl:if test= \"$c/G_SG11/S_LOC\">\n\t\t\t\t\t<E1EDKA1 SEGMENT=\"1\">\n\t\t\t\t\t\t<PARVW>MF</PARVW>\n\t\t\t\t\t\t  <LIFNR>\n\t\t\t\t\t\t\t<xsl:value-of select=\"$c/G_SG11/S_LOC/C_C519/D_3225\"/>\n\t\t\t\t\t\t  </LIFNR>\n\t\t\t\t\t</E1EDKA1>\n\t\t\t\t</xsl:if>\n\t\t\t\t<!-- Complete MF-->\n\n\t\t\t\t<E1EDK02 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>001</QUALF>\n\t\t\t\t\t<BELNR>\n\t\t\t\t\t\t<xsl:value-of select=\"$custmerPO\" />\n\t\t\t\t\t</BELNR>\n\t\t\t\t\t<DATUM>\n\t\t\t\t\t\t<xsl:value-of select=\"$custmerPODate\" />\n\t\t\t\t\t</DATUM>\n\t\t\t\t</E1EDK02>\n\t\t\t\t<E1EDK17 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>001</QUALF>\n\t\t\t\t\t<LKOND></LKOND>\n\t\t\t\t\t<LKTEXT>BRF</LKTEXT>\n\t\t\t\t</E1EDK17>\n\t\t\t\t<E1EDK17 SEGMENT=\"1\">\n\t\t\t\t\t<QUALF>002</QUALF>\n\t\t\t\t\t<LKOND></LKOND>\n\t\t\t\t\t<LKTEXT>BRF</LKTEXT>\n\t\t\t\t</E1EDK17>\n\t\t\t\t\n\t\t\t\t<E1EDKT1 SEGMENT=\"1\">\n  \t\t\t\t\t<TDID>ZM01</TDID>\n  \t\t\t\t\t<TSSPRAS>EN</TSSPRAS>\n\t\t\t\t\t<xsl:for-each select='(($c/G_SG2/S_NAD)[position() &lt;= 999999])'>\n\t\t\t\t\t<xsl:variable name=\"c\" select=\".\" />\n\t\t\t\t\t<xsl:variable name=\"posnr\" select=\"position()\" />\n  \t\t\t\t\t<E1EDKT2 SEGMENT=\"1\">\n  \t\t\t\t\t\t<TDLINE>\n  \t\t\t\t\t\t\t<xsl:value-of\n  \t\t\t\t\t\t\t  select=\"if ($c/C_C082/D_3039 != '') then (concat($c/D_3035,':',$c/C_C082/D_3039,';')) else (concat($c/D_3035,':',$c/C_C082/D_3036,';'))\"/>\n  \t\t\t\t\t\t</TDLINE>\n  \t\t\t\t\t\t<TDFORMAT>/</TDFORMAT>\n  \t\t\t\t\t</E1EDKT2>\n\t\t\t\t\t</xsl:for-each>\n\t\t\t\t  </E1EDKT1>\n\n\t\t\t\t<!-- For each EDI ITEM -->\n\t\t\t\t<xsl:for-each\n\t\t\t\t\tselect=\"(($c/G_SG25)[position() &lt;= 999999])\">\n\t\t\t\t\t<xsl:variable name=\"c\" select=\".\" />\n\t\t\t\t\t<xsl:variable name=\"posnr\" select=\"position()\" />\n\t\t\t\t\t<E1EDP01 SEGMENT=\"1\">\n\t\t\t\t\t\t<POSEX>\n\t\t\t\t\t\t <xsl:value-of select=\"if ($c/S_LIN/D_1082 != '') then $c/S_LIN/D_1082 else $posnr\"/>\n\t\t\t\t\t\t</POSEX>\n\t\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t\t<MENGE>\n\t\t\t\t\t\t\t<xsl:value-of select=\"$c/S_QTY/C_C186[D_6063 = '21']/D_6060\" />\n\t\t\t\t\t\t</MENGE>\n\t\t\t\t\t\t<MENEE>EA</MENEE>\n\t\t\t\t\t\t<VPREI><xsl:value-of select=\"$c/G_SG28/S_PRI/C_C509[D_5125='AAA']/D_5118\"/></VPREI> <!-- Need to check-->\n\t\t\t\t\t\t<PEINH>1</PEINH>\n\t\t\t\t\t\t<CURCY>\n\t\t\t\t\t\t    <xsl:value-of select=\"$currency\" />\n\t\t\t\t\t\t</CURCY>\n\t\t\t\t\t\t<MATNR>\n\t\t\t\t\t\t\t<xsl:value-of select=\"$c/S_LIN/C_C212/D_7140\" />\n\t\t\t\t\t\t</MATNR>\n\n\t          <!-- OPTIONAL if Customer sending MSRP/CTP -->\n\t\t\t\t\t\t<!-- <xsl:if test=\"$c/G_SG28/S_PRI/C_C509/D_5125 = 'AAB' or $c/G_SG28/S_PRI/C_C509/D_5125 = 'AAE' \">\n  \t\t\t\t\t\t<E1EDP05 SEGMENT=\"1\">\n  \t\t\t\t\t\t\t<ALCKZ>+</ALCKZ>\n  \t\t\t\t\t\t\t<KSCHL>ZEDR</KSCHL>\n  \t\t\t\t\t\t\t<KRATE>\n  \t\t\t\t\t\t\t\t<xsl:value-of\n  \t\t\t\t\t\t\t\t\tselect=\"$c/G_SG28/S_PRI/C_C509[D_5125 = 'AAE' or D_5125 = 'AAB']/D_5118\" />\n  \t\t\t\t\t\t\t</KRATE>\n  \t\t\t\t\t\t\t<UPRBS>1</UPRBS>\n  \t\t\t\t\t\t</E1EDP05>\n\t\t\t\t\t\t</xsl:if> -->\n\n\t\t\t\t\t\t<E1EDP20 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<WMENG>\n\t\t\t\t\t\t\t\t<xsl:value-of select=\"$c/S_QTY/C_C186[D_6063 = '21']/D_6060\" />\n\t\t\t\t\t\t\t</WMENG>\n\t\t\t\t\t\t</E1EDP20>\n\n\t\t\t\t\t\t<E1EDP19 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<QUALF>001</QUALF>\n\t\t\t\t\t\t\t<IDTNR></IDTNR>\n\t\t\t\t\t\t</E1EDP19>\n\t\t\t\t\t\t<E1EDP19 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<QUALF>002</QUALF>\n\t\t\t\t\t\t\t<IDTNR>BRFTEXT</IDTNR>\n\t\t\t\t\t\t\t<KTEXT>BRFTEXT</KTEXT>\n\t\t\t\t\t\t</E1EDP19>\n\n\t\t\t\t\t\t<E1EDPT1 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<TDID>ZI01</TDID>\n\t\t\t\t\t\t\t<TSSPRAS>EN</TSSPRAS>\n\t\t\t\t\t\t\t<E1EDPT2 SEGMENT=\"1\">\n\t\t\t\t\t\t\t\t<TDLINE><xsl:value-of select=\"concat($c/S_LIN/C_C212/D_7140,'/',$c/S_PIA/C_C212[D_7143='SA']/D_7140)\"/></TDLINE>\n\t\t\t\t\t\t\t\t<TDFORMAT>/</TDFORMAT>\n\t\t\t\t\t\t\t</E1EDPT2>\n\t\t\t\t\t\t</E1EDPT1>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<E1EDPT1 SEGMENT=\"1\">\n\t\t\t\t\t\t\t<TDID>ZPSX</TDID>\n\t\t\t\t\t\t\t<TSSPRAS>EN</TSSPRAS>\n\t\t\t\t\t\t\t<E1EDPT2 SEGMENT=\"1\">\n\t\t\t\t\t\t\t\t<TDLINE>\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"$c/S_LIN/D_1082\"/>\n\t\t\t\t\t\t\t\t</TDLINE>\n\t\t\t\t\t\t\t\t<TDFORMAT>/</TDFORMAT>\n\t\t\t\t\t\t\t</E1EDPT2>\n\t\t\t\t\t\t</E1EDPT1>\n\n\t\t\t\t\t  <!-- Logic for multiple LOC -->\n\t\t\t\t\t  <xsl:if test=\"$havemultLoc\" >\n\t\t\t\t\t\t<xsl:for-each select=\"$c/G_SG33\">\n\t\t\t\t\t\t  <xsl:variable name=\"c\" select=\".\" />\n\t\t\t\t\t\t  <xsl:if test = \"$c/S_LOC/C_C517/D_3225 != ''\">\n\t\t\t\t\t\t\t<E1EDP34 SEGMENT=\"1\">\n\t\t\t\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t\t\t\t<PARTNER_INDICATOR>M</PARTNER_INDICATOR>\n\t\t\t\t\t\t\t\t<EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"$c/S_LOC/C_C517/D_3225\" />\n\t\t\t\t\t\t\t\t</EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t<ORDER_QUANTITY>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"($c/S_QTY/C_C186/D_6060)\" />\n\t\t\t\t\t\t\t   </ORDER_QUANTITY>\n\t\t\t\t\t\t\t</E1EDP34>\n\t\t\t\t\t\t  </xsl:if>\n\n\t\t\t\t\t\t  <xsl:if test = \"$c/S_LOC/C_C519/D_3223 != ''\">\n\t\t\t\t\t\t\t<E1EDP34 SEGMENT=\"1\">\n\t\t\t\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t\t\t\t<PARTNER_INDICATOR>M</PARTNER_INDICATOR>\n\t\t\t\t\t\t\t\t<EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"$c/S_LOC/C_C519/D_3223\" />\n\t\t\t\t\t\t\t\t</EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t<ORDER_QUANTITY>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"($c/S_QTY/C_C186/D_6060)\" />\n\t\t\t\t\t\t\t   </ORDER_QUANTITY>\n\t\t\t\t\t\t\t</E1EDP34>\n\t\t\t\t\t\t  </xsl:if>\n\n\t\t\t\t\t\t  <xsl:if test = \"$c/S_LOC/C_C553/D_3233 != ''\">\n\t\t\t\t\t\t\t<E1EDP34 SEGMENT=\"1\">\n\t\t\t\t\t\t\t\t<ACTION>001</ACTION>\n\t\t\t\t\t\t\t\t<PARTNER_INDICATOR>M</PARTNER_INDICATOR>\n\t\t\t\t\t\t\t\t<EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"$c/S_LOC/C_C553/D_3233\" />\n\t\t\t\t\t\t\t\t</EXTERNAL_PARTNER>\n\t\t\t\t\t\t\t\t<ORDER_QUANTITY>\n\t\t\t\t\t\t\t\t  <xsl:value-of select=\"($c/S_QTY/C_C186/D_6060)\" />\n\t\t\t\t\t\t\t   </ORDER_QUANTITY>\n\t\t\t\t\t\t\t</E1EDP34>\n\t\t\t\t\t\t  </xsl:if>\n\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t</xsl:if>\n\t\t\t\t\t\t<!-- end for loop -->\n\t\t\t\t\t</E1EDP01>\n\t\t\t\t</xsl:for-each>\n\t\t\t\t\n\t\t\t\t<E1EDS01 SEGMENT=\"1\">\n                    <SUMID>\n                        <xsl:value-of select=\"$c/S_CNT/C_C270[D_6069='2']/D_6066\" />\n                    </SUMID>\n                    <SUMME>\n                        <xsl:value-of select=\"$c/S_CNT/C_C270[D_6069='1']/D_6066\" />\n                    </SUMME>\n                </E1EDS01>\n\t\t\t\t\n\t\t\t\t<E1EDK37 SEGMENT=\"1\">\n\t\t\t\t  <FSH_CANDATE><xsl:value-of select=\"$cdd\"/></FSH_CANDATE>\n\t\t\t\t</E1EDK37>\n\n\t\t\t</IDOC>\n\t\t</FSHORD03>\n\t</xsl:template>\n</xsl:stylesheet>\n",
+    "matched_segments_count": 15,
+    "total_segments_count": 16
+  }
+]

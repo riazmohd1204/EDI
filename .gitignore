@@ -1,0 +1,80 @@
+# Python
+__pycache__/
+**/__pycache__/
+fastapi-backend/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+.venv/
+.venv-*/
+env/
+ENV/
+
+# Node modules (explicit to avoid checkout/lock issues on Windows)
+node_modules/
+**/node_modules/
+FigmaReactFrontend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment variables — do not commit (Azure, SAP, HANA, etc.)
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
+**/.env
+**/.env.local
+fastapi-backend/.env
+*.env
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache files
+*.pkl
+*.cache
+edi_cache/
+*.faiss
+.devcache/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Session data (contains uploaded files)
+fastapi-backend/data/sessions/
+
+# React build output and Vite cache
+FigmaReactFrontend/dist/
+FigmaReactFrontend/build/
+FigmaReactFrontend/.vite/
+**/node_modules/.vite/
+
+# Debug / inspection outputs (810 XSLT)
+**/tmp*_xslt_debug.xml
